@@ -8,10 +8,16 @@ public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
     public int LineCount = 6;
+    public int highScore = 0;
+    public string playerName;
+
     public Rigidbody Ball;
 
     public Text ScoreText;
-    public GameObject GameOverText;
+    public Text BestScoreText;
+    public Text newHighScoreText;
+    public GameObject gameOverScreen;
+    public Input playerNameInput;
     
     private bool m_Started = false;
     private int m_Points;
@@ -36,6 +42,25 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+        GetResults();
+    }
+
+    void UpdateText()
+    {
+        if (playerName != "")
+        {
+            BestScoreText.text = "High score: " + playerName + " : " + highScore;
+        }
+        else
+        {
+            BestScoreText.text = "You can do it!";
+        }
+    }
+
+    void GetResults()
+    {
+        highScore = GameManager.Instance.bestScore;
+        playerName = GameManager.Instance.playerName;
     }
 
     private void Update()
@@ -60,6 +85,7 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        UpdateText();
     }
 
     void AddPoint(int point)
@@ -71,6 +97,22 @@ public class MainManager : MonoBehaviour
     public void GameOver()
     {
         m_GameOver = true;
-        GameOverText.SetActive(true);
+        gameOverScreen.SetActive(true);
+        newHighScoreText.gameObject.SetActive(false);
+        CheckHighScore();
+    }
+
+    void CheckHighScore()
+    {
+        if (m_Points > highScore)
+        {
+            newHighScoreText.gameObject.SetActive(true);
+            GameManager.Instance.SaveScore(m_Points);
+        } 
+    }
+
+    public void GameMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
