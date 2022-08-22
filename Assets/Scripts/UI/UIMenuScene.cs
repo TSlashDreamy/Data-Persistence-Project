@@ -47,6 +47,20 @@ public class UIMenuScene : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void ResetScore()
+    {
+        if(GameManager.Instance.playerName != "")
+        {
+            GameManager.Instance.ResetScore();
+            GameManager.Instance.LoadScore();
+            bestScoreText.text = "Best score reseted!";
+        } else
+        {
+            bestScoreText.text = "There is nothing to reset";
+        }
+        
+    }
+
     public void QuitGame()
     {
 #if UNITY_EDITOR

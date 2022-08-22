@@ -40,6 +40,16 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(Application.persistentDataPath + "/saveFile.json", json);
     }
 
+    public void ResetScore()
+    {
+        SaveData data = new SaveData();
+        data.bestScore = 0;
+        data.playerName = "";
+
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(Application.persistentDataPath + "/saveFile.json", json);
+    }
+
     public void LoadScore()
     {
         string path = Application.persistentDataPath + "/saveFile.json";

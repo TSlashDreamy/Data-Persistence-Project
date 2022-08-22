@@ -47,7 +47,7 @@ public class MainManager : MonoBehaviour
 
     void UpdateText()
     {
-        if (playerName != "")
+        if (playerName != "" && highScore != 0)
         {
             BestScoreText.text = "High score: " + playerName + " : " + highScore;
         }
@@ -77,6 +77,7 @@ public class MainManager : MonoBehaviour
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
+            UpdateText();
         }
         else if (m_GameOver)
         {
@@ -85,7 +86,6 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
-        UpdateText();
     }
 
     void AddPoint(int point)
@@ -108,6 +108,7 @@ public class MainManager : MonoBehaviour
         {
             newHighScoreText.gameObject.SetActive(true);
             GameManager.Instance.SaveScore(m_Points);
+            GameManager.Instance.LoadScore();
         } 
     }
 
